@@ -1,40 +1,41 @@
-l, c = map(int, input().split())
-a, b= map(int, input().split())
-a -= 1
-b -= 1
-mat = []
-last_a = -1
-last_b = -1
-k = 2
-for row in mat:
-    k += row.count(1)
-for i in range(l):
-    mat.append(list(map(int, input().split())))
-for _ in range(200):
-        right = b + 1 <= c - 1
-        left = b - 1 >= 0
-        up = a - 1 >= 0
-        down = a + 1 <= l - 1
-        if up:
-            if mat[a - 1][b] == 1 and a - 1 != last_a:
-                last_a = a
-                last_b = -1
-                a -=1
-        if down:
-            if mat[a + 1][b] == 1 and a + 1 != last_a:
-                last_a = a
-                last_b = -1
-                a += 1
-        if left:
-            if mat[a][b - 1] == 1 and b - 1 != last_b:
-                last_b = b
-                last_a = -1
-                b -= 1
-        if right:
-            if mat[a][b + 1] == 1 and b + 1 != last_b:
-                last_b = b
-                last_a = -1
-                b += 1
-a += 1
-b += 1
-print(a, b)
+def main():
+    def encontrar_posicao(L, C, mapa):
+        last_dir = ''
+        # Encontra a posição inicial de Hermione ('o')
+        for i in range(L):
+            for j in range(C):
+                if mapa[i][j] == 'o':
+                    linha, coluna = i, j
+                    break
+        
+        # Se movimenta
+        while True:
+            # sobe
+            if linha > 0 and mapa[linha - 1][coluna] == 'H' and last_dir != 'baixo':
+                linha -= 1
+                last_dir = 'cima'
+            #desce
+            elif linha < L - 1 and mapa[linha + 1][coluna] == 'H' and last_dir != 'cima':
+                linha += 1
+                last_dir = 'baixo'
+            # esquerda
+            elif coluna > 0 and mapa[linha][coluna - 1] == 'H' and last_dir != 'direita':
+                coluna -= 1
+                last_dir = 'esquerda'
+            # direita
+            elif coluna < C - 1 and mapa[linha][coluna + 1] == 'H' and last_dir != 'esquerda':
+                coluna += 1
+                last_dir = 'direita'
+            else:
+                break  # Se não encontrar mais 'H', termina o loop
+        
+        return linha + 1, coluna + 1
+
+    L, C = map(int, input().split()) # Linha e colunas
+    mapa = [list(input()) for _ in range(L)]  # Mapa
+
+    linha, coluna = encontrar_posicao(L, C, mapa)
+    print(linha, coluna)
+
+if __name__ == "__main__":
+    main()
